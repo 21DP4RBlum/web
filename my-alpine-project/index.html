@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premier League Table</title>
+</head>
+<body>
+  <table id="premierLeagueTable">
+    <!-- Table content will be dynamically inserted here -->
+  </table>
+  <script>
+    async function getPremierLeagueData() {
+      const response = await fetch('/premier-league-data');
+      const data = await response.json();
+      return data;
+    }
+
+    function renderTable(data) {
+      const tableBody = document.getElementById('premierLeagueTable');
+
+      // Clear existing rows
+      tableBody.innerHTML = '';
+
+      data.forEach((club, index) => {
+        const row = tableBody.insertRow();
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${club['Club']}</td>
+          <td>${club['P']}</td>
+          <td>${club['W']}</td>
+          <td>${club['D']}</td>
+          <td>${club['L']}</td>
+          <td>${club['PTS']}</td>
+        `;
+      });
+    }
+
+    async function main() {
+      const premierLeagueData = await getPremierLeagueData();
+
+      if (premierLeagueData) {
+        renderTable(premierLeagueData);
+      }
+    }
+
+    main();
+  </script>
+</body>
+</html>
